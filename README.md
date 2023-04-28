@@ -1,4 +1,4 @@
-# Simple Blockchain using Ruby
+# Forked Simple Blockchain using Ruby
 Improved version of "Build your own blockchain from scratch in 20 lines of Ruby!"	from https://github.com/openblockchains/awesome-blockchains/tree/master/blockchain.rb and inspired by "Let's Build the Tiniest Blockchain In Less Than 50 Lines of Python by Gerald Nash" from https://medium.com/crypto-currently/lets-build-the-tiniest-blockchain-e70965a248b
 <br>
 
