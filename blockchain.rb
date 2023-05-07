@@ -20,28 +20,36 @@ class Blockchain
     @chain.last.hash
   end
 
-  def launcher
-    b0 = Block.first( { from: "Dhaval", to: "Humber", what: "coin", qty: "10" } )
-    b1 = Block.next(b0, { from: "Humber", to: "Yulia", what: "coin", qty: "5" } )
-    b2 = Block.next(b1, { from: "Yulia", to: "Dhaval", what: "coin", qty: "2" } )
-    b3 = Block.next(b2, { from: "Dhaval", to: "Yulia", what: "coin", qty: "3" } )
-    puts b0.inspect
-    puts b1.inspect
-    puts b2.inspect
-    puts b3.inspect
+  def launcher(network)
+    loop do
+      puts "Enter a new transaction (Y/n):"
+      input = gets.chomp.downcase
+      break if input != "y"
+    
+      transaction = get_transactions_data
+      transaction.each do |t|
+      network.broadcast_transaction(t)
+      end
+    end
   end
 end
 
+
+
+
 # Configura las IPs y puertos de las tres máquinas aquí
-HOST = '192.168.1.125'
+HOST = '192.168.1.40'
 PORT = 8000
-PEER2_HOST = '192.168.1.193'
+PEER2_HOST = '192.168.1.194'
 PEER2_PORT = 8002
 PEER1_HOST = '192.168.1.143'
 PEER1_PORT = 8001
 
+blockchain = Blockchain.new
+network = Network.new(HOST, PORT, blockchain)
+
 # Crea un nuevo objeto de la clase Network
-network = Network.new(HOST, PORT)
+
 puts "blockchain.rb: Servidor abierto en #{HOST}:#{PORT}"
 network.add_peer(PEER1_HOST, PEER1_PORT)
 puts "blockchain.rb: Agregado par #{PEER1_HOST}:#{PEER1_PORT}"
@@ -55,5 +63,7 @@ network.share_peers
 puts "blockchain.rb: Pares: #{network.peers}"
 
 # Ejecuta el código existente para crear y mostrar la cadena de bloques
-blockchain = Blockchain.new
-blockchain.launcher
+
+blockchain.launcher(network)
+
+

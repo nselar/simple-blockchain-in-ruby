@@ -6,10 +6,11 @@ require 'json'
 class Network
   attr_reader :peers
 
-  def initialize(host, port)
+  def initialize(host, port, blockchain)
     @host = host
     @port = port
     @peers = []
+    @blockchain = blockchain
   end
 
   def add_peer(peer_host, peer_port)
@@ -35,6 +36,10 @@ class Network
     puts "network.rb: Recibido: #{data}"
 
     case data['type']
+    when 'transaction'
+      transaction = data['data']
+      @blockchain.add_block([transaction])
+      puts "network.rb: Transacción agregada: #{transaction}"
     when 'peers'
       @peers |= data['data']
       client.puts({ type: 'peers', data: @peers }.to_json)
@@ -43,6 +48,20 @@ class Network
 
     client.close                                                                                              
   end
+
+  def broadcast_transaction(transaction)
+    @peers.each do |peer|
+      begin
+        socket = TCPSocket.new(peer[:host], peer[:port])
+        socket.puts({ type: 'transaction', data: transaction }.to_json)
+        puts "network.rb: Enviado: { type: 'transaction', data: #{transaction} }"
+        socket.close
+      rescue => e
+        puts "network.rb: Error al enviar la transacción: #{e.message}"
+      end
+    end
+  end
+  
 
   def share_peers
     @peers.each do |peer|
@@ -58,7 +77,6 @@ class Network
         socket.close
         puts "network.rb: Compartiendo pares con #{peer[:host]}:#{peer[:port]}"
       rescue => e
-        puts "network.rb: Error al compartir pares: #{e.message}"
       end
     end
   end
