@@ -35,7 +35,7 @@ $ sudo ufw disable
 ## Uso
 
 Para ejecutar la red de blockchain:
-  1. Instala ruby en tu sistema con $ sudo apt-get install ruby si tienes una distribución debian.
+  1. Instala ruby en tu equipo con ``` $ sudo apt-get install ruby``` si tienes una distribución debian.
   2. Clona este repositorio en cada una de las computadoras de tu red LAN que deseas que participe en la red de blockchain,
   3. En cada computadora navega hasta los archivos del respositorio y abre una terminal. Ejecuta: ``` $ ruby blockchain.rb```
   4. Cada uno de los ordenadores se pondrá a la escucha de transacciones y una vez que haya al menos dos participantes, te indicará las instrucciones para agregar transacciones.
