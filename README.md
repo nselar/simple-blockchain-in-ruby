@@ -1,4 +1,4 @@
-# Red de blockchain simple peer2peer usando ruby
+# Red de blockchain simple P2P usando ruby
 
 Versión mejorada de Simple Blockchain usando Ruby obtenida de https://github.com/apradillap/simple-blockchain-in-ruby
 
